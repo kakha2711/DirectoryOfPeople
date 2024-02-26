@@ -1,0 +1,21 @@
+﻿
+namespace DirectoryOfPeople.DTO;
+
+public class ContactInformation
+{
+    public int ID { get; set; }
+    public string ContactName { get; set; } = null!;
+    public ContactName NameContact { get; set; }
+    public Person Person { get; set; } = null!;
+    public DateTime CreateDate { get; set; }
+    public bool IsDelete { get; set; }
+
+}
+
+public enum ContactName:byte
+{
+    Mobail = 0,
+    Ofice= 1,
+    Home= 2,
+    Email = 3,
+}
