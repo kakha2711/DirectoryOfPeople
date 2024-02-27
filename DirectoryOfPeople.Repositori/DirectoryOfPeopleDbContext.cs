@@ -1,5 +1,6 @@
 ﻿using DirectoryOfPeople.DTO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace DirectoryOfPeople.Repositori;
 
@@ -20,9 +21,15 @@ public class DirectoryOfPeopleDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        //modelBuilder.Entity<PersonalityConnection>()
-        //            .HasOne(p => p.Person)
-        //            .WithMany(p => p.WhichPerson)
-        //            .HasForeignKey<Person>(p=>p.PersonID);
+        modelBuilder.Entity<Person>()
+                    .HasOne(p => p.PersonalityConnections)
+                    .WithOne(p => p.Person)
+                    .HasForeignKey<PersonalityConnection>(p => p.PersonID);
+
+        modelBuilder.Entity<Person>()
+            .HasMany(p => p.WithWhomPerson)
+                    .WithOne(p => p.WithWhomPerson)
+                    .HasForeignKey(p => p.WithWhomPersonID)
+                    .OnDelete(DeleteBehavior.ClientCascade);
     }
 }

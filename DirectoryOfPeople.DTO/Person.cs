@@ -13,8 +13,8 @@ public class Person
     public City City { get; set; } = null!;
 
     public ICollection<ContactInformation> ContactInformation { get; set; } = null!;
-    public ICollection<PersonalityConnection> WhichPerson { get; set; } = null!;
-    //public ICollection<PersonalityConnection> WithWhomPerson { get; set; } = null!;
+    public PersonalityConnection PersonalityConnections  { get; set; } = null!;
+    public ICollection<PersonalityConnection> WithWhomPerson { get; set; } = null!;
 
     public DateTime CreateDate { get; set; }
     public bool IsDelete { get; set; }

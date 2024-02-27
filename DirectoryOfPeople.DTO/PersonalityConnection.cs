@@ -12,7 +12,7 @@ public class PersonalityConnection
     public Person Person { get; set; } = null!;
 
     //[ForeignKey("Person")]
-    //public int WithWhomPersonID { get; set; }
+    public int WithWhomPersonID { get; set; }
     public Person WithWhomPerson { get; set; } = null!;
 
     public connectionType ConnectionType { get; set; }
