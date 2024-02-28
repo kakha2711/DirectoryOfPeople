@@ -147,8 +147,7 @@ namespace DirectoryOfPeople.Repositori.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("PersonID")
-                        .IsUnique();
+                    b.HasIndex("PersonID");
 
                     b.HasIndex("WithWhomPersonID");
 
@@ -180,8 +179,8 @@ namespace DirectoryOfPeople.Repositori.Migrations
             modelBuilder.Entity("DirectoryOfPeople.DTO.PersonalityConnection", b =>
                 {
                     b.HasOne("DirectoryOfPeople.DTO.Person", "Person")
-                        .WithOne("PersonalityConnections")
-                        .HasForeignKey("DirectoryOfPeople.DTO.PersonalityConnection", "PersonID")
+                        .WithMany("PersonalityConnections")
+                        .HasForeignKey("PersonID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -205,8 +204,7 @@ namespace DirectoryOfPeople.Repositori.Migrations
                 {
                     b.Navigation("ContactInformation");
 
-                    b.Navigation("PersonalityConnections")
-                        .IsRequired();
+                    b.Navigation("PersonalityConnections");
 
                     b.Navigation("WithWhomPerson");
                 });

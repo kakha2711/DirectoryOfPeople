@@ -117,8 +117,7 @@ namespace DirectoryOfPeople.Repositori.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_PersonalityConnections_PersonID",
                 table: "PersonalityConnections",
-                column: "PersonID",
-                unique: true);
+                column: "PersonID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersonalityConnections_WithWhomPersonID",

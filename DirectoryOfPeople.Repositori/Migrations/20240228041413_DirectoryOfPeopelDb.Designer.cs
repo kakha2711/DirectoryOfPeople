@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DirectoryOfPeople.Repositori.Migrations
 {
     [DbContext(typeof(DirectoryOfPeopleDbContext))]
-    [Migration("20240227193100_DirectoryOfPeopelDb")]
+    [Migration("20240228041413_DirectoryOfPeopelDb")]
     partial class DirectoryOfPeopelDb
     {
         /// <inheritdoc />
@@ -150,8 +150,7 @@ namespace DirectoryOfPeople.Repositori.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("PersonID")
-                        .IsUnique();
+                    b.HasIndex("PersonID");
 
                     b.HasIndex("WithWhomPersonID");
 
@@ -183,8 +182,8 @@ namespace DirectoryOfPeople.Repositori.Migrations
             modelBuilder.Entity("DirectoryOfPeople.DTO.PersonalityConnection", b =>
                 {
                     b.HasOne("DirectoryOfPeople.DTO.Person", "Person")
-                        .WithOne("PersonalityConnections")
-                        .HasForeignKey("DirectoryOfPeople.DTO.PersonalityConnection", "PersonID")
+                        .WithMany("PersonalityConnections")
+                        .HasForeignKey("PersonID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -208,8 +207,7 @@ namespace DirectoryOfPeople.Repositori.Migrations
                 {
                     b.Navigation("ContactInformation");
 
-                    b.Navigation("PersonalityConnections")
-                        .IsRequired();
+                    b.Navigation("PersonalityConnections");
 
                     b.Navigation("WithWhomPerson");
                 });

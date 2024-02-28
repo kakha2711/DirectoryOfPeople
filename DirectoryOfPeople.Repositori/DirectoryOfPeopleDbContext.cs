@@ -22,9 +22,9 @@ public class DirectoryOfPeopleDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Person>()
-                    .HasOne(p => p.PersonalityConnections)
+                    .HasMany(p => p.PersonalityConnections)
                     .WithOne(p => p.Person)
-                    .HasForeignKey<PersonalityConnection>(p => p.PersonID);
+                    .HasForeignKey(p => p.PersonID);
 
         modelBuilder.Entity<Person>()
             .HasMany(p => p.WithWhomPerson)
