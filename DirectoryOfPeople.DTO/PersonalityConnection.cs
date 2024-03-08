@@ -8,12 +8,12 @@ public class PersonalityConnection
     public int ID { get; set; }
 
     //[ForeignKey("Person")]
-    public int PersonID { get; set; }
-    public Person Person { get; set; } = null!;
+    //public int PersonID { get; set; }
+    public ICollection<Person> FromPerson { get; set; } = null!;
 
     //[ForeignKey("Person")]
-    public int WithWhomPersonID { get; set; }
-    public Person WithWhomPerson { get; set; } = null!;
+    //public int WithWhomPersonID { get; set; }
+    public ICollection<Person> ToPerson { get; set; } = null!;
 
     public connectionType ConnectionType { get; set; }
 

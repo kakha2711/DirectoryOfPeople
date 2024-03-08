@@ -31,16 +31,23 @@ namespace DirectoryOfPeople.Repositori.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("date")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("(0)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Cities");
                 });
@@ -53,18 +60,23 @@ namespace DirectoryOfPeople.Repositori.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
+                    b.Property<string>("ContactNamber")
+                        .IsRequired()
+                        .HasColumnType("varchar(15)");
+
                     b.Property<string>("ContactName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("date")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
-
-                    b.Property<byte>("NameContact")
-                        .HasColumnType("tinyint");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("(0)");
 
                     b.Property<int>("PersonID")
                         .HasColumnType("int");
@@ -79,45 +91,42 @@ namespace DirectoryOfPeople.Repositori.Migrations
             modelBuilder.Entity("DirectoryOfPeople.DTO.Person", b =>
                 {
                     b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CityID")
-                        .HasColumnType("int");
+                        .HasColumnType("date");
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("date")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(30)");
 
-                    b.Property<byte>("Gender")
-                        .HasColumnType("tinyint");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("(0)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(75)");
 
                     b.Property<string>("PersonalNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(11)");
 
                     b.Property<string>("PictureAddres")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("CityID");
 
                     b.ToTable("People");
                 });
@@ -130,28 +139,53 @@ namespace DirectoryOfPeople.Repositori.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<byte>("ConnectionType")
-                        .HasColumnType("tinyint");
+                    b.Property<string>("ConnectionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(35)");
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("date")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("PersonID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WithWhomPersonID")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("(0)");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("PersonID");
-
-                    b.HasIndex("WithWhomPersonID");
-
                     b.ToTable("PersonalityConnections");
+                });
+
+            modelBuilder.Entity("FromPeopelPersonalityConnection", b =>
+                {
+                    b.Property<int>("FromPersonID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FromPersonalityConnectionID")
+                        .HasColumnType("int");
+
+                    b.HasKey("FromPersonID", "FromPersonalityConnectionID");
+
+                    b.HasIndex("FromPersonalityConnectionID");
+
+                    b.ToTable("FromPeopelPersonalityConnection");
+                });
+
+            modelBuilder.Entity("ToPersonalityConnectionPerson", b =>
+                {
+                    b.Property<int>("ToPersonID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ToPersonalityConnectionID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ToPersonID", "ToPersonalityConnectionID");
+
+                    b.HasIndex("ToPersonalityConnectionID");
+
+                    b.ToTable("ToPersonalityConnectionPerson");
                 });
 
             modelBuilder.Entity("DirectoryOfPeople.DTO.ContactInformation", b =>
@@ -169,30 +203,41 @@ namespace DirectoryOfPeople.Repositori.Migrations
                 {
                     b.HasOne("DirectoryOfPeople.DTO.City", "City")
                         .WithMany("Persons")
-                        .HasForeignKey("CityID")
+                        .HasForeignKey("ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("City");
                 });
 
-            modelBuilder.Entity("DirectoryOfPeople.DTO.PersonalityConnection", b =>
+            modelBuilder.Entity("FromPeopelPersonalityConnection", b =>
                 {
-                    b.HasOne("DirectoryOfPeople.DTO.Person", "Person")
-                        .WithMany("PersonalityConnections")
-                        .HasForeignKey("PersonID")
+                    b.HasOne("DirectoryOfPeople.DTO.Person", null)
+                        .WithMany()
+                        .HasForeignKey("FromPersonID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DirectoryOfPeople.DTO.Person", "WithWhomPerson")
-                        .WithMany("WithWhomPerson")
-                        .HasForeignKey("WithWhomPersonID")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                    b.HasOne("DirectoryOfPeople.DTO.PersonalityConnection", null)
+                        .WithMany()
+                        .HasForeignKey("FromPersonalityConnectionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ToPersonalityConnectionPerson", b =>
+                {
+                    b.HasOne("DirectoryOfPeople.DTO.Person", null)
+                        .WithMany()
+                        .HasForeignKey("ToPersonID")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Person");
-
-                    b.Navigation("WithWhomPerson");
+                    b.HasOne("DirectoryOfPeople.DTO.PersonalityConnection", null)
+                        .WithMany()
+                        .HasForeignKey("ToPersonalityConnectionID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DirectoryOfPeople.DTO.City", b =>
@@ -203,10 +248,6 @@ namespace DirectoryOfPeople.Repositori.Migrations
             modelBuilder.Entity("DirectoryOfPeople.DTO.Person", b =>
                 {
                     b.Navigation("ContactInformation");
-
-                    b.Navigation("PersonalityConnections");
-
-                    b.Navigation("WithWhomPerson");
                 });
 #pragma warning restore 612, 618
         }

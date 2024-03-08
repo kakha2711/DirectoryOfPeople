@@ -4,8 +4,8 @@ namespace DirectoryOfPeople.DTO;
 public class ContactInformation
 {
     public int ID { get; set; }
-    public string ContactName { get; set; } = null!;
-    public ContactName NameContact { get; set; }
+    public string ContactNamber { get; set; } = null!;
+    public ContactName ContactName { get; set; }
     public Person Person { get; set; } = null!;
     public DateTime CreateDate { get; set; }
     public bool IsDelete { get; set; }
