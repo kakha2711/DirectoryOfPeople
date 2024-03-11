@@ -21,50 +21,73 @@ public class DirectoryOfPeopleDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<PersonalityConnection>()
-                    .HasMany(p => p.ToPerson)
-                    .WithMany(p => p.ToPersonalityConnection)
-                    .UsingEntity(
-                                    "ToPersonalityConnectionPerson",
-                                    l => l.HasOne(typeof(Person)).WithMany().HasForeignKey("ToPersonID").HasPrincipalKey(nameof(Person.ID)),
-                                    k => k.HasOne(typeof(PersonalityConnection)).WithMany().HasForeignKey("ToPersonalityConnectionID").HasPrincipalKey(nameof(PersonalityConnection.ID)),
-                                    m => m.HasKey("ToPersonID", "ToPersonalityConnectionID")
-                                );
+
+        
+        modelBuilder.Entity<Person>()
+                            .Property(p => p.ID)
+                            .HasColumnType("int")
+                            .IsRequired(true);
+        modelBuilder.Entity<Person>()
+                            .Property(p => p.FirstName)
+                            .HasColumnType("nvarchar(30)")
+                            .IsRequired(true);
+        modelBuilder.Entity<Person>()
+                            .Property(p => p.LastName)
+                            .HasColumnType("nvarchar(75)")
+                            .IsRequired(true);
+        modelBuilder.Entity<Person>()
+                            .Property(p => p.PersonalNumber)
+                            .HasColumnType("nvarchar(11)")
+                            .IsRequired(true);
+        modelBuilder.Entity<Person>()
+                            .Property(p => p.BirthDate)
+                            .HasColumnType("date")
+                            .IsRequired(true);
+        modelBuilder.Entity<Person>()
+                            .Property(p => p.PictureAddres)
+                            .HasColumnType("nvarchar(max)")
+                            .IsRequired(true);
+        modelBuilder.Entity<Person>()
+                            .Property(p => p.Gender)
+                            .HasColumnType("nvarchar(10)")
+                            .IsRequired(true);
+        //modelBuilder.Entity<Person>()
+        //                    .HasMany(p => p.City)
+        //                    .WithOney(p => p.Persons)
+        //                    .HasForeignKey(p => p.ID);
+        modelBuilder.Entity<Person>()
+                            .Property(p => p.CreateDate)
+                            .HasColumnType("date")
+                            .HasDefaultValueSql("GetDate()")
+                            .IsRequired(true);
+        modelBuilder.Entity<Person>()
+                            .Property(pc => pc.IsDelete)
+                            .HasColumnType("bit")
+                            .HasDefaultValueSql("(0)")
+                            .IsRequired(true);
+
+        modelBuilder.Entity<Person>()
+              .HasMany(p => p.ToPersonalityConnection)
+              .WithOne(p => p.ToPerson)
+              .HasForeignKey(p => p.ToPersonID)
+              .HasPrincipalKey(p=>p.ID)
+              .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<Person>()
+              .HasMany(p => p.FromPersonalityConnection)
+              .WithOne(p => p.FromPerson)
+              .HasForeignKey(p => p.FromPersonID)
+              .HasPrincipalKey(p => p.ID)
+              .OnDelete(DeleteBehavior.NoAction);
+
+
 
         modelBuilder.Entity<PersonalityConnection>()
-                    .HasMany(p => p.FromPerson)
-                    .WithMany(p => p.FromPersonalityConnection)
-                    .UsingEntity(
-                                    "FromPeopelPersonalityConnection",
-                                    l => l.HasOne(typeof(Person))
-                                            .WithMany()
-                                            .HasForeignKey("FromPersonID")
-                                            .HasPrincipalKey(nameof(Person.ID)),
-                                    k => k.HasOne(typeof(PersonalityConnection))
-                                            .WithMany()
-                                            .HasForeignKey("FromPersonalityConnectionID")
-                                            .HasPrincipalKey(nameof(PersonalityConnection.ID)),
-                                    m => m.HasKey("FromPersonID", "FromPersonalityConnectionID")
-                                );
-
+            .HasKey(p => new { p.ToPersonID, p.FromPersonID })
+            .HasName("ToPersonID");
         //modelBuilder.Entity<PersonalityConnection>()
-        //                                .HasOne(pc => pc.FromPerson)
-        //                                .WithMany(pc => pc.FromPersonalityConnection)
-        //                                .HasForeignKey(pc => pc.ID)
-        //                                .OnDelete(DeleteBehavior.ClientCascade);
+        //    .HasKey(p => p.FromPersonID)
+        //    .HasName("FromPersonID");
 
-        //modelBuilder.Entity<PersonalityConnection>()
-        //                        .HasOne(pc => pc.ToPerson)
-        //                        .WithMany(pc => pc.ToPersonalityConnection)
-        //                        .HasForeignKey(pc => pc.ID)
-        //                        .OnDelete(DeleteBehavior.ClientCascade);
-
-
-        modelBuilder.Entity<PersonalityConnection>()
-                                        .Property(pc => pc.ID)
-                                        .HasColumnType("int")
-                                        .IsRequired(true);
-                                        
         modelBuilder.Entity<PersonalityConnection>()
                                         .Property(pc => pc.ConnectionType)
                                         .HasColumnType("nvarchar(35)")
@@ -83,55 +106,13 @@ public class DirectoryOfPeopleDbContext : DbContext
                                         .IsRequired(true);
 
 
-
-        modelBuilder.Entity<Person>()
-                            .Property(p=>p.ID)
-                            .HasColumnType ("int")
-                            .IsRequired(true);
-        modelBuilder.Entity<Person>()
-                            .Property(p=>p.FirstName)
-                            .HasColumnType("nvarchar(30)")
-                            .IsRequired (true);
-        modelBuilder.Entity<Person>()
-                            .Property(p=>p.LastName)
-                            .HasColumnType("nvarchar(75)")
-                            .IsRequired(true);
-        modelBuilder.Entity<Person>()
-                            .Property(p=>p.PersonalNumber)
-                            .HasColumnType("nvarchar(11)")
-                            .IsRequired(true);
-        modelBuilder.Entity<Person>()
-                            .Property(p => p.BirthDate)
-                            .HasColumnType("date")
-                            .IsRequired(true);
-        modelBuilder.Entity<Person>()
-                            .Property(p => p.PictureAddres)
-                            .HasColumnType("nvarchar(max)")
-                            .IsRequired(true);
-        modelBuilder.Entity<Person>()
-                            .Property(p => p.Gender)
-                            .HasColumnType("nvarchar(10)")
-                            .IsRequired(true);
-        modelBuilder.Entity<Person>()
-                            .HasOne(p => p.City)
-                            .WithMany(p => p.Persons)
-                            .HasForeignKey(p => p.ID);
-        modelBuilder.Entity<Person>()
-                            .Property(p => p.CreateDate)
-                            .HasColumnType("date")
-                            .HasDefaultValueSql("GetDate()")
-                            .IsRequired(true);
-        modelBuilder.Entity<Person>()
-                            .Property(pc => pc.IsDelete)
-                            .HasColumnType("bit")
-                            .HasDefaultValueSql("(0)")
-                            .IsRequired(true);
+        
 
 
         modelBuilder.Entity<City>()
-                            .Property(c=>c.ID)
-                            .HasColumnType ("int")
-                            .IsRequired (true);
+                            .Property(c => c.ID)
+                            .HasColumnType("int")
+                            .IsRequired(true);
         modelBuilder.Entity<City>()
                             .Property(c => c.Name)
                             .HasColumnType("nvarchar(100)")
@@ -139,6 +120,9 @@ public class DirectoryOfPeopleDbContext : DbContext
         modelBuilder.Entity<City>()
                             .HasIndex(c => c.Name)
                             .IsUnique(true);
+        modelBuilder.Entity<City>()
+                            .HasMany(p => p.Persons)
+                            .WithOne(p => p.City);
         modelBuilder.Entity<City>()
                             .Property(p => p.CreateDate)
                             .HasColumnType("date")
@@ -151,9 +135,9 @@ public class DirectoryOfPeopleDbContext : DbContext
                             .IsRequired(true);
 
         modelBuilder.Entity<ContactInformation>()
-                            .Property(ci=>ci.ID)
+                            .Property(ci => ci.ID)
                             .HasColumnType("int")
-                            .IsRequired (true);
+                            .IsRequired(true);
         modelBuilder.Entity<ContactInformation>()
                             .Property(ci => ci.ContactNamber)
                             .HasColumnType("varchar(15)")
@@ -163,8 +147,8 @@ public class DirectoryOfPeopleDbContext : DbContext
                             .HasColumnType("nvarchar(30)")
                             .IsRequired(true);
         modelBuilder.Entity<ContactInformation>()
-                            .HasOne(ci=>ci.Person)
-                            .WithMany(ci=>ci.ContactInformation)
+                            .HasOne(ci => ci.Person)
+                            .WithMany(ci => ci.ContactInformation)
                             .IsRequired(true);
         modelBuilder.Entity<ContactInformation>()
                             .Property(p => p.CreateDate)
@@ -176,6 +160,6 @@ public class DirectoryOfPeopleDbContext : DbContext
                             .HasColumnType("bit")
                             .HasDefaultValueSql("(0)")
                             .IsRequired(true);
-
+    
     }
 }

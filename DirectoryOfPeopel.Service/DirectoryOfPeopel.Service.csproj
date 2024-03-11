@@ -10,4 +10,8 @@
     <Folder Include="Interface\Repository\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DirectoryOfPeople.DTO\DirectoryOfPeople.DTO.csproj" />
+  </ItemGroup>
+
 </Project>

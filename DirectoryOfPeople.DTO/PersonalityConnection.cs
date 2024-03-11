@@ -5,15 +5,13 @@ namespace DirectoryOfPeople.DTO;
 
 public class PersonalityConnection
 {
-    public int ID { get; set; }
+    
+    public int FromPersonID { get; set; }
+    public Person FromPerson { get; set; } = null!;
 
-    //[ForeignKey("Person")]
-    //public int PersonID { get; set; }
-    public ICollection<Person> FromPerson { get; set; } = null!;
-
-    //[ForeignKey("Person")]
-    //public int WithWhomPersonID { get; set; }
-    public ICollection<Person> ToPerson { get; set; } = null!;
+    
+    public int ToPersonID { get; set; }
+    public Person ToPerson { get; set; } = null!;
 
     public connectionType ConnectionType { get; set; }
 

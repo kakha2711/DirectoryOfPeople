@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using DirectoryOfPeople.DTO;
 
-namespace DirectoryOfPeopel.Service.Interface.Services
+namespace DirectoryOfPeopel.Service.Interface.Services;
+
+internal interface PersonalityConnectionService
 {
-    internal interface PersonalityConnectionService
-    {
-    }
+    PersonalityConnection GetCreatePersonalityConnection(int id);
+    PersonalityConnection GetPersonalityConnection();
+    void CreatePersonalityConnection(PersonalityConnection personalityConnection);
+    void UpdatePersonalityConnection(PersonalityConnection personalityConnection);
+    void DeletePersonalityConnection(int id);
 }

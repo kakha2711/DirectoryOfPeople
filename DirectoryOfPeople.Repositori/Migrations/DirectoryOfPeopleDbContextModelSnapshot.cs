@@ -91,10 +91,16 @@ namespace DirectoryOfPeople.Repositori.Migrations
             modelBuilder.Entity("DirectoryOfPeople.DTO.Person", b =>
                 {
                     b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("date");
+
+                    b.Property<int>("CityID")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
@@ -128,16 +134,18 @@ namespace DirectoryOfPeople.Repositori.Migrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("CityID");
+
                     b.ToTable("People");
                 });
 
             modelBuilder.Entity("DirectoryOfPeople.DTO.PersonalityConnection", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("ToPersonID")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    b.Property<int>("FromPersonID")
+                        .HasColumnType("int");
 
                     b.Property<string>("ConnectionType")
                         .IsRequired()
@@ -153,39 +161,12 @@ namespace DirectoryOfPeople.Repositori.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValueSql("(0)");
 
-                    b.HasKey("ID");
+                    b.HasKey("ToPersonID", "FromPersonID")
+                        .HasName("ToPersonID");
+
+                    b.HasIndex("FromPersonID");
 
                     b.ToTable("PersonalityConnections");
-                });
-
-            modelBuilder.Entity("FromPeopelPersonalityConnection", b =>
-                {
-                    b.Property<int>("FromPersonID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FromPersonalityConnectionID")
-                        .HasColumnType("int");
-
-                    b.HasKey("FromPersonID", "FromPersonalityConnectionID");
-
-                    b.HasIndex("FromPersonalityConnectionID");
-
-                    b.ToTable("FromPeopelPersonalityConnection");
-                });
-
-            modelBuilder.Entity("ToPersonalityConnectionPerson", b =>
-                {
-                    b.Property<int>("ToPersonID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ToPersonalityConnectionID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ToPersonID", "ToPersonalityConnectionID");
-
-                    b.HasIndex("ToPersonalityConnectionID");
-
-                    b.ToTable("ToPersonalityConnectionPerson");
                 });
 
             modelBuilder.Entity("DirectoryOfPeople.DTO.ContactInformation", b =>
@@ -203,41 +184,30 @@ namespace DirectoryOfPeople.Repositori.Migrations
                 {
                     b.HasOne("DirectoryOfPeople.DTO.City", "City")
                         .WithMany("Persons")
-                        .HasForeignKey("ID")
+                        .HasForeignKey("CityID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("City");
                 });
 
-            modelBuilder.Entity("FromPeopelPersonalityConnection", b =>
+            modelBuilder.Entity("DirectoryOfPeople.DTO.PersonalityConnection", b =>
                 {
-                    b.HasOne("DirectoryOfPeople.DTO.Person", null)
-                        .WithMany()
+                    b.HasOne("DirectoryOfPeople.DTO.Person", "FromPerson")
+                        .WithMany("FromPersonalityConnection")
                         .HasForeignKey("FromPersonID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("DirectoryOfPeople.DTO.PersonalityConnection", null)
-                        .WithMany()
-                        .HasForeignKey("FromPersonalityConnectionID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ToPersonalityConnectionPerson", b =>
-                {
-                    b.HasOne("DirectoryOfPeople.DTO.Person", null)
-                        .WithMany()
+                    b.HasOne("DirectoryOfPeople.DTO.Person", "ToPerson")
+                        .WithMany("ToPersonalityConnection")
                         .HasForeignKey("ToPersonID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("DirectoryOfPeople.DTO.PersonalityConnection", null)
-                        .WithMany()
-                        .HasForeignKey("ToPersonalityConnectionID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("FromPerson");
+
+                    b.Navigation("ToPerson");
                 });
 
             modelBuilder.Entity("DirectoryOfPeople.DTO.City", b =>
@@ -248,6 +218,10 @@ namespace DirectoryOfPeople.Repositori.Migrations
             modelBuilder.Entity("DirectoryOfPeople.DTO.Person", b =>
                 {
                     b.Navigation("ContactInformation");
+
+                    b.Navigation("FromPersonalityConnection");
+
+                    b.Navigation("ToPersonalityConnection");
                 });
 #pragma warning restore 612, 618
         }

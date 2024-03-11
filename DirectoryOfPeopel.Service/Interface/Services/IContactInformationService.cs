@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using DirectoryOfPeople.DTO;
 
-namespace DirectoryOfPeopel.Service.Interface.Services
+namespace DirectoryOfPeopel.Service.Interface.Services;
+
+internal interface IContactInformationService
 {
-    internal interface IContactInformationService
-    {
-    }
+    ContactInformation GetContactInformation(int id);
+    ContactInformation GetContactInformation();
+    void CreateContactInformation(ContactInformation contactInformation);
+    void UpdateContactInformation(ContactInformation contactInformation);
+    void DeleteContactInformation(int id);
+
 }
