@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interface\Repository\" />
+    <ProjectReference Include="..\DirectoryOfPeople.DTO\DirectoryOfPeople.DTO.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DirectoryOfPeople.DTO\DirectoryOfPeople.DTO.csproj" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
