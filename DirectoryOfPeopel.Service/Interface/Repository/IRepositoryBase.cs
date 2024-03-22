@@ -7,9 +7,9 @@ public interface IRepositoryBase<T> where T : class
     T Get(params object[] items);
     IQueryable<T> set(Expression<Func<T,bool>> predicate);
     IQueryable<T> set();
-    void insert(T item);
-    void update(T item);
+    void Insert(T item);
+    void Update(T item);
     void InsertOrUpdate(T item);
-    void delete(T item);
-    void delete(object id);
+    void Delete(T item);
+    void Delete(object id);
 }

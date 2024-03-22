@@ -3,10 +3,10 @@ using DirectoryOfPeople.DTO;
 
 namespace DirectoryOfPeopel.Service.Interface.Services;
 
-internal interface PersonalityConnectionService
+internal interface IPersonalityConnectionService
 {
-    PersonalityConnection GetCreatePersonalityConnection(int id);
-    PersonalityConnection GetPersonalityConnection();
+    Task<PersonalityConnection> GetCreatePersonalityConnection(int id);
+    Task<IQueryable<PersonalityConnection>> GetPersonalityConnection();
     void CreatePersonalityConnection(PersonalityConnection personalityConnection);
     void UpdatePersonalityConnection(PersonalityConnection personalityConnection);
     void DeletePersonalityConnection(int id);
