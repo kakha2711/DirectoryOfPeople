@@ -1,7 +1,7 @@
 ﻿
 namespace DirectoryOfPeople.Model;
 
-internal record PersonalityConnectionModel
+public record PersonalityConnectionModel
                                     (    
                                         string ConnectionType
                                     );

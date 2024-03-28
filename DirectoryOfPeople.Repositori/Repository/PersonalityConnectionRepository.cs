@@ -7,6 +7,6 @@ internal class PersonalityConnectionRepository : RepositoryBase<PersonalityConne
 {
     internal PersonalityConnectionRepository(DirectoryOfPeopleDbContext context) : base(context)
     {
-
+        //aq unda davwero yvela personi rom camovigo
     }
 }

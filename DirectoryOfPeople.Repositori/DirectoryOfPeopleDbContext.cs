@@ -84,9 +84,7 @@ public class DirectoryOfPeopleDbContext : DbContext
         modelBuilder.Entity<PersonalityConnection>()
             .HasKey(p => new { p.ToPersonID, p.FromPersonID })
             .HasName("ToPersonID");
-        //modelBuilder.Entity<PersonalityConnection>()
-        //    .HasKey(p => p.FromPersonID)
-        //    .HasName("FromPersonID");
+       
 
         modelBuilder.Entity<PersonalityConnection>()
                                         .Property(pc => pc.ConnectionType)

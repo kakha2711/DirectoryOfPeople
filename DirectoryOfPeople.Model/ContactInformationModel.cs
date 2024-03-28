@@ -1,7 +1,7 @@
 ﻿
 namespace DirectoryOfPeople.Model;
 
-public record ContactInformation
+public record ContactInformationModel
                         (
                             string ContactNamber,
                             string ContactName

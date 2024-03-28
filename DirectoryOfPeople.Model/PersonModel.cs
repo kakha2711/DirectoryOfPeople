@@ -1,7 +1,7 @@
 ﻿
 namespace DirectoryOfPeople.Model;
 
-internal record PersonModel
+public record PersonModel
                         (
                             string FirstName,
                             string LastName,
